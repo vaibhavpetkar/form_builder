@@ -1,0 +1,13 @@
+en:
+  form_builder:
+    name: 'Form Builder'
+    form:
+      name: 'Name'
+      structure: 'Structure (JSON)'
+      create: 'Create Form'
+      update: 'Update Form'
+      back: 'Back'
+      view: 'View'
+      edit: 'Edit'
+      delete: 'Delete'
+      no_forms: 'No forms available. Create a new form'

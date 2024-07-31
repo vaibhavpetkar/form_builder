@@ -1,0 +1,33 @@
+<%= stylesheet_link_tag 'form_builder', media: 'all' %>
+<%= javascript_include_tag 'form_builder' %>
+
+<h1>Forms</h1>
+
+<%= link_to 'New Form', new_form_path, class: 'btn btn-primary' %>
+
+<% if @forms.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @forms.each do |form| %>
+        <tr>
+          <td><%= form.id %></td>
+          <td><%= form.name %></td>
+          <td>
+            <%= link_to 'Show', form_path(form) %>
+            <%= link_to 'Edit', edit_form_path(form) %>
+            <%= link_to 'Destroy', form_path(form), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No forms available.</p>
+<% end %>

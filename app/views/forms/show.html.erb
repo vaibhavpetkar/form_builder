@@ -1,0 +1,98 @@
+<%= stylesheet_link_tag 'form_builder', media: 'all' %>
+<%= javascript_include_tag 'form_builder' %>
+
+<div class="form-view-container">
+  <h1>Form Preview</h1>
+
+  <div id="form-preview" class="form-preview">
+    <%= raw @form.structure %>
+  </div>
+
+  <div class="form-actions">
+    <%= link_to 'Edit Form', edit_form_path(@form.id), class: 'btn btn-primary' %>
+    <%= link_to 'Back to List', forms_path, class: 'btn btn-secondary' %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const formStructure = <%= raw @form.structure.to_json.html_safe %>;
+
+    function renderFormStructure(structure) {
+      const formPreview = document.getElementById('form-preview');
+      formPreview.innerHTML = '';
+
+      structure.forEach(component => {
+        const componentElement = createComponentElement(component);
+        formPreview.appendChild(componentElement);
+      });
+    }
+
+    function createComponentElement(component) {
+      const element = document.createElement('div');
+      element.classList.add('dropped-element');
+      element.style.fontSize = component.fontSize || '14px';
+      element.style.color = component.color || '#000';
+
+      switch (component.type) {
+        case 'text':
+          element.innerHTML = `<label>${component.label || 'Text Field'}:</label><input type="text" value="${component.value || ''}" readonly>`;
+          break;
+        case 'textarea':
+          element.innerHTML = `<label>${component.label || 'Textarea'}:</label><textarea readonly>${component.value || ''}</textarea>`;
+          break;
+        case 'checkbox':
+          element.innerHTML = `<label><input type="checkbox" ${component.value ? 'checked' : ''} disabled> ${component.label || 'Checkbox'}</label>`;
+          break;
+        case 'radio':
+          element.innerHTML = `<label><input type="radio" name="radio-group" ${component.value ? 'checked' : ''} disabled> ${component.label || 'Radio Button'}</label>`;
+          break;
+        case 'select':
+          element.innerHTML = `<label>${component.label || 'Dropdown'}:</label><select disabled><option>${component.value || 'Option 1'}</option></select>`;
+          break;
+        case 'button':
+          element.innerHTML = `<button disabled>${component.label || 'Button'}</button>`;
+          break;
+        case 'date':
+          element.innerHTML = `<label>${component.label || 'Date Picker'}:</label><input type="date" value="${component.value || ''}" readonly>`;
+          break;
+        case 'file':
+          element.innerHTML = `<label>${component.label || 'File Upload'}:</label><input type="file" disabled>`;
+          break;
+        case 'range':
+          element.innerHTML = `<label>${component.label || 'Slider'}:</label><input type="range" value="${component.value || '50'}" disabled>`;
+          break;
+        case 'switch':
+          element.innerHTML = `<label class="switch"><input type="checkbox" ${component.value ? 'checked' : ''} disabled><span class="slider"></span></label>`;
+          break;
+        case 'color':
+          element.innerHTML = `<label>${component.label || 'Color Picker'}:</label><input type="color" value="${component.value || '#000000'}" disabled>`;
+          break;
+        case 'range':
+          element.innerHTML = `<label>${component.label || 'Range Input'}:</label><input type="range" value="${component.value || '50'}" disabled>`;
+          break;
+        case 'password':
+          element.innerHTML = `<label>${component.label || 'Password Field'}:</label><input type="password" value="${component.value || ''}" readonly>`;
+          break;
+        case 'number':
+          element.innerHTML = `<label>${component.label || 'Number Field'}:</label><input type="number" value="${component.value || ''}" readonly>`;
+          break;
+        case 'hidden':
+          element.innerHTML = `<input type="hidden" value="${component.value || ''}" readonly>`;
+          break;
+        case 'image':
+          element.innerHTML = `<img src="${component.value || ''}" alt="${component.label || 'Image'}" class="form-image">`;
+          break;
+        case 'video':
+          element.innerHTML = `<video controls><source src="${component.value || ''}" type="video/mp4">Your browser does not support the video tag.</video>`;
+          break;
+        default:
+          element.innerHTML = `<p>Unsupported component type: ${component.type}</p>`;
+      }
+
+      return element;
+    }
+
+    renderFormStructure(formStructure);
+  });
+</script>

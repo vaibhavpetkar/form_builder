@@ -1,0 +1,16 @@
+<%= form_with(model: form, local: true) do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :structure, 'Form Structure (JSON)' %>
+    <%= f.text_area :structure, rows: 10, class: 'form-control' %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Back', forms_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>
